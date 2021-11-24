@@ -81,6 +81,11 @@ public:
 	{
 		return cur_size;
 	}
+	void clear(){
+		cur_size = 0;
+		right = limit_size / 2;
+		left = right;
+	}
 	void Print()
 	{
 		int temp_left = left;

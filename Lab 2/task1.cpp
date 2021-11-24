@@ -92,191 +92,149 @@ void Fill(int *arr, int size)
         arr[i] = rand() % 10000;
     }
 }
-void Fill2(int *arr, int size){
-    for(int i = 0; i < size;i++){
+void Fill2(int *arr, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
         arr[i] = i;
     }
 }
-void Fill3(int *arr, int size){
-    for(int i = 0; i < size;i++){
-        arr[i] = size-i;
+void Fill3(int *arr, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        arr[i] = size - i;
     }
 }
-void Fill4(int *arr, int size){
-    for(int i = 0; i < size;i++){
+void Fill4(int *arr, int size)
+{
+    for (int i = 0; i < size; i++)
+    {
         arr[i] = 1;
     }
 }
-int main()
+bool is_equal(int *sorted_arr, int *to_check, int n)
 {
-    ofstream f("random_values.txt"),f2("increasing_values.txt"),f3("decreasing_values.txt"),f4("same_values.txt");
-    srand(time(0));
+    for (int i = 0; i < n; i++)
+    {
+        if (sorted_arr[i] != to_check[i])
+        {
+            return 0;
+        }
+        
+    }
+    return 1;
+}
+void sort_check(int *arr, int size,void (*sort_func)(int *, int), ofstream &file)
+{
     double start_time;
     double end_time;
-    // int arr[5] = {5,5,3,1,1};
-    // CountingSort(arr,5);
-    // for(int i = 0; i < 5;i++){
-    //     cout << arr[i] << " ";
-    // }
+    int *temp_arr = new int[size];
+    int *sorted_arr = new int[size];
+
+    Copy(sorted_arr,arr,size);
+    Copy(temp_arr, arr, size);
+
+    sort(sorted_arr,sorted_arr+size);
+
+    start_time = clock();
+    sort_func(temp_arr, size);
+    end_time = clock();
+    
+    if(!is_equal(sorted_arr,temp_arr,size)){
+        throw string("sorted uncorrectly!");
+    }
+        
+
+    file << (end_time - start_time) / CLK_TCK << ";";
+
+    delete temp_arr;
+    delete sorted_arr;
+}
+
+int main()
+{
+    ofstream f("random_values.csv"), f2("increasing_values.csv"), f3("decreasing_values.csv"), f4("same_values.csv");
+    srand(time(0));
+    
     f << "N;"
       << "BubbleSort;"
       << "InsertionSort;"
       << "SelectionSort;"
       << "CountingSort;" << endl;
-    for (int i = 1000; i < 35000; i += 1000)
+    for (int i = 1000; i < 3000; i += 1000)
     {
         f << i << ";";
-
         int *arr = new int[i];
-        int *temp_arr = new int[i];
-        Fill(arr, i);
+        Fill(arr,i);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        BubbleSort(temp_arr, i);
-        end_time = clock();
-        f << (end_time - start_time) / CLK_TCK << ";";
+        sort_check(arr,i,BubbleSort,f);
+        sort_check(arr,i,InsertionSort,f);
+        sort_check(arr,i,SelectionSort,f);
+        sort_check(arr,i,CountingSort,f);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        InsertionSort(temp_arr, i);
-        end_time = clock();
-        f << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        SelectionSort(temp_arr, i);
-        end_time = clock();
-        f << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        CountingSort(temp_arr, i);
-        end_time = clock();
-        f << (end_time - start_time) / CLK_TCK << ";" << endl;
-
+        f<<endl;
         delete arr;
-        delete temp_arr;
     }
+
     f2 << "N;"
-      << "BubbleSort;"
-      << "InsertionSort;"
-      << "SelectionSort;"
-      << "CountingSort;" << endl;
-    for (int i = 1000; i < 35000; i += 1000)
+       << "BubbleSort;"
+       << "InsertionSort;"
+       << "SelectionSort;"
+       << "CountingSort;" << endl;
+     for (int i = 1000; i < 3000; i += 1000)
     {
-        f2 << i << ";";
-
+        f << i << ";";
         int *arr = new int[i];
-        int *temp_arr = new int[i];
-        Fill2(arr, i);
+        Fill2(arr,i);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        BubbleSort(temp_arr, i);
-        end_time = clock();
-        f2 << (end_time - start_time) / CLK_TCK << ";";
+        sort_check(arr,i,BubbleSort,f2);
+        sort_check(arr,i,InsertionSort,f2);
+        sort_check(arr,i,SelectionSort,f2);
+        sort_check(arr,i,CountingSort,f2);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        InsertionSort(temp_arr, i);
-        end_time = clock();
-        f2 << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        SelectionSort(temp_arr, i);
-        end_time = clock();
-        f2 << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        CountingSort(temp_arr, i);
-        end_time = clock();
-        f2 << (end_time - start_time) / CLK_TCK << ";" << endl;
-
+        f2<<endl;
         delete arr;
-        delete temp_arr;
     }
+
     f3 << "N;"
-      << "BubbleSort;"
-      << "InsertionSort;"
-      << "SelectionSort;"
-      << "CountingSort;" << endl;
-    for (int i = 1000; i < 35000; i += 1000)
+       << "BubbleSort;"
+       << "InsertionSort;"
+       << "SelectionSort;"
+       << "CountingSort;" << endl;
+    for (int i = 1000; i < 3000; i += 1000)
     {
-        f3 << i << ";";
-
+        f << i << ";";
         int *arr = new int[i];
-        int *temp_arr = new int[i];
-        Fill3(arr, i);
+        Fill3(arr,i);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        BubbleSort(temp_arr, i);
-        end_time = clock();
-        f3 << (end_time - start_time) / CLK_TCK << ";";
+        sort_check(arr,i,BubbleSort,f3);
+        sort_check(arr,i,InsertionSort,f3);
+        sort_check(arr,i,SelectionSort,f3);
+        sort_check(arr,i,CountingSort,f3);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        InsertionSort(temp_arr, i);
-        end_time = clock();
-        f3 << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        SelectionSort(temp_arr, i);
-        end_time = clock();
-        f3 << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        CountingSort(temp_arr, i);
-        end_time = clock();
-        f3 << (end_time - start_time) / CLK_TCK << ";" << endl;
-
+        f3<<endl;
         delete arr;
-        delete temp_arr;
     }
+
     f4 << "N;"
-      << "BubbleSort;"
-      << "InsertionSort;"
-      << "SelectionSort;"
-      << "CountingSort;" << endl;
-    for (int i = 1000; i < 35000; i += 1000)
+       << "BubbleSort;"
+       << "InsertionSort;"
+       << "SelectionSort;"
+       << "CountingSort;" << endl;
+    for (int i = 1000; i < 3000; i += 1000)
     {
-        f4 << i << ";";
-
+        f << i << ";";
         int *arr = new int[i];
-        int *temp_arr = new int[i];
-        Fill4(arr, i);
+        Fill4(arr,i);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        BubbleSort(temp_arr, i);
-        end_time = clock();
-        f4 << (end_time - start_time) / CLK_TCK << ";";
+        sort_check(arr,i,BubbleSort,f4);
+        sort_check(arr,i,InsertionSort,f4);
+        sort_check(arr,i,SelectionSort,f4);
+        sort_check(arr,i,CountingSort,f4);
 
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        InsertionSort(temp_arr, i);
-        end_time = clock();
-        f4 << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        SelectionSort(temp_arr, i);
-        end_time = clock();
-        f4 << (end_time - start_time) / CLK_TCK << ";";
-
-        Copy(temp_arr, arr, i);
-        start_time = clock();
-        CountingSort(temp_arr, i);
-        end_time = clock();
-        f4 << (end_time - start_time) / CLK_TCK << ";" << endl;
-
+        f4<<endl;
         delete arr;
-        delete temp_arr;
     }
     return 0;
 }

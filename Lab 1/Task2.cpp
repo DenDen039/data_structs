@@ -73,7 +73,6 @@ class Stack{
 };
 template <typename T>
 class MultiStack{
-	
 	struct Node{
 		Stack<T> stack;
 		Node *prev;
@@ -103,7 +102,7 @@ class MultiStack{
 		}
 		T pop(){
 			if(last->stack.empty() && last == root)
-				throw "MultiStack is empty";
+				throw string("MultiStack is empty");
 			else if(last->stack.empty()){
 				Node *temp = last;
 				last = last->prev;
@@ -111,7 +110,7 @@ class MultiStack{
 				delete temp;
 			}
 			return last->stack.pop();
-		}
+		}	
 		void push(T value){
 			if(last->stack.full())
 				CreateNewStack();
@@ -158,6 +157,17 @@ int main (){
 	cout <<"Popped element: " << st.pop() << endl;
 	cout <<"Popped element: "<<  st.pop() << endl<<endl;
 
+	cout << "MultiStack: ";st.print();
+	cout << "Number of elements  " << st.size() << "; Number of stacks " << st.num_stacks()<< endl << endl;
+	try{
+		st.pop();
+		st.pop();
+		st.pop();
+		st.pop();
+	}catch(string &s){
+		cout << s << endl;
+	}
+	cout << "Is empty: " << st.empty() << endl;
 	cout << "MultiStack: ";st.print();
 	cout << "Number of elements  " << st.size() << "; Number of stacks " << st.num_stacks()<< endl;
 	return 0;

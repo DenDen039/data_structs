@@ -184,6 +184,7 @@ int main()
       << "SelectionSort;"
       << "CountingSort;"
       << "HeapSort;" << endl;
+      
     for (int i = 1000; i < 36000; i += 1000)
     {
         f << i << ";";

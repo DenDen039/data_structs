@@ -3,10 +3,31 @@ using namespace std;
 
 void Copy(int *dist, int *arr, int size)
 {
-    // for(int i = 0; i < size;i++){
-    //     dist[i] = arr[i];
-    // }
     memcpy(dist, arr, size * sizeof(int));
+}
+void Heapify(int *arr, int parent,int size){
+    int max_el = parent;
+    int left = parent*2+1,right = parent*2+2;
+    if(left < size && arr[left] > arr[max_el])
+        max_el = left;
+    if(right < size && arr[right] > arr[max_el])
+        max_el = right;
+    if(max_el != parent){
+        swap(arr[max_el],arr[parent]);
+        Heapify(arr,max_el,size);
+    }
+}
+void BuildHeap(int *arr, int size){
+    for(int i  = size/2-1;i >= 0;i--){
+        Heapify(arr,i,size);
+    }
+}
+void HeapSort(int *arr, int size){
+    BuildHeap(arr,size);
+    for(int i = size-1; i >0;i--){
+        swap(arr[0],arr[i]);
+        Heapify(arr,0,i);
+    }
 }
 void BubbleSort(int *arr, int n)
 {
@@ -161,7 +182,8 @@ int main()
       << "BubbleSort;"
       << "InsertionSort;"
       << "SelectionSort;"
-      << "CountingSort;" << endl;
+      << "CountingSort;"
+      << "HeapSort;" << endl;
     for (int i = 1000; i < 3000; i += 1000)
     {
         f << i << ";";
@@ -172,6 +194,7 @@ int main()
         sort_check(arr,i,InsertionSort,f);
         sort_check(arr,i,SelectionSort,f);
         sort_check(arr,i,CountingSort,f);
+        sort_check(arr,i,HeapSort,f);
 
         f<<endl;
         delete arr;
@@ -181,7 +204,8 @@ int main()
        << "BubbleSort;"
        << "InsertionSort;"
        << "SelectionSort;"
-       << "CountingSort;" << endl;
+       << "CountingSort;"
+       << "HeapSort;" << endl;
      for (int i = 1000; i < 3000; i += 1000)
     {
         f << i << ";";
@@ -192,6 +216,7 @@ int main()
         sort_check(arr,i,InsertionSort,f2);
         sort_check(arr,i,SelectionSort,f2);
         sort_check(arr,i,CountingSort,f2);
+        sort_check(arr,i,HeapSort,f2);
 
         f2<<endl;
         delete arr;
@@ -201,7 +226,8 @@ int main()
        << "BubbleSort;"
        << "InsertionSort;"
        << "SelectionSort;"
-       << "CountingSort;" << endl;
+       << "CountingSort;"
+       << "HeapSort;" << endl;
     for (int i = 1000; i < 3000; i += 1000)
     {
         f << i << ";";
@@ -212,6 +238,7 @@ int main()
         sort_check(arr,i,InsertionSort,f3);
         sort_check(arr,i,SelectionSort,f3);
         sort_check(arr,i,CountingSort,f3);
+        sort_check(arr,i,HeapSort,f3);
 
         f3<<endl;
         delete arr;
@@ -221,7 +248,8 @@ int main()
        << "BubbleSort;"
        << "InsertionSort;"
        << "SelectionSort;"
-       << "CountingSort;" << endl;
+       << "CountingSort;" 
+       << "HeapSort;" << endl;
     for (int i = 1000; i < 3000; i += 1000)
     {
         f << i << ";";
@@ -232,6 +260,7 @@ int main()
         sort_check(arr,i,InsertionSort,f4);
         sort_check(arr,i,SelectionSort,f4);
         sort_check(arr,i,CountingSort,f4);
+        sort_check(arr,i,HeapSort,f4);
 
         f4<<endl;
         delete arr;

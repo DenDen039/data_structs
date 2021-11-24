@@ -184,7 +184,7 @@ int main()
       << "SelectionSort;"
       << "CountingSort;"
       << "HeapSort;" << endl;
-    for (int i = 1000; i < 35000; i += 1000)
+    for (int i = 1000; i < 36000; i += 1000)
     {
         f << i << ";";
         int *arr = new int[i];
@@ -206,7 +206,7 @@ int main()
        << "SelectionSort;"
        << "CountingSort;"
        << "HeapSort;" << endl;
-     for (int i = 1000; i < 35000; i += 1000)
+     for (int i = 1000; i < 36000; i += 1000)
     {
         f2 << i << ";";
         int *arr = new int[i];
@@ -228,7 +228,7 @@ int main()
        << "SelectionSort;"
        << "CountingSort;"
        << "HeapSort;" << endl;
-    for (int i = 1000; i < 35000; i += 1000)
+    for (int i = 1000; i < 36000; i += 1000)
     {
         f3 << i << ";";
         int *arr = new int[i];
@@ -250,7 +250,7 @@ int main()
        << "SelectionSort;"
        << "CountingSort;" 
        << "HeapSort;" << endl;
-    for (int i = 1000; i < 35000; i += 1000)
+    for (int i = 1000; i < 36000; i += 1000)
     {
         f4 << i << ";";
         int *arr = new int[i];

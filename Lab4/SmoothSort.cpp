@@ -11,7 +11,7 @@ int *LeonardoNums(int size)
     int i = 1;
     while (nums[i++] < size)
     {
-        if (limit_size >= i)
+        if (limit_size <= i)
         {
             limit_size += 10;
             int *temp = new int[limit_size];
@@ -24,9 +24,6 @@ int *LeonardoNums(int size)
         }
         nums[i] = nums[i - 1] + nums[i - 2] + 1;
     }
-    // for(int i = 0; i < limit_size;i++)
-    //     cout << nums[i] << " ";
-    // cout << endl;
     return nums;
 }
 void RestoreHeap(int heap_size, int *heap, int i, int *arr, int arr_size, int *leo_nums)

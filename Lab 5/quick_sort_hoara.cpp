@@ -1,28 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
+int partition2(int *arr, int l, int r)
+{
+    int pivot = arr[l],i = l-1,j = r+1;
+    while(true){
+        do{
+            i++;
+        }while(pivot > arr[i]);
+        do{
+            j--;
+        }while(pivot < arr[j]);
+        if(i  >=j)
+            return j;
+        swap(arr[i],arr[j]);
+    }
+}
 void quick_sort2(int *arr, int l, int r)
 {
 
-    int temp = arr[(l + r) / 2], i = l, j = r;
-    do
+    if (l < r)
     {
-        while (arr[i] < temp)
-            i++;
-        while (arr[j] > temp)
-            j--;
-
-        if (i <= j)
-        {
-            if (arr[i] > arr[j])
-                swap(arr[i], arr[j]);
-            i++;
-            j--;
-        }
-    } while (i <= j);
-    if (i < r)
-        quick_sort2(arr, i, r);
-    if (l < j)
-        quick_sort2(arr, l, j);
+        int m = partition2(arr, l, r);
+        quick_sort2(arr, l, m);
+        quick_sort2(arr, m + 1, r);
+    }
 }
 int main()
 {

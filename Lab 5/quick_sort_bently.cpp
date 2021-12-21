@@ -2,27 +2,34 @@
 using namespace std;
 void quick_sort3(int *arr, int l, int r)
 {
+    r++;
+    if (r-l <= 1)
+        return;
 
-    int temp = arr[(l + r) / 2], i = l, j = r;
-    do
+    int i = l, j = r-1,pivot = rand()%(r-l)+l;
+
+    while (i < j)
     {
-        while (arr[i] < temp)
-            i++;
-        while (arr[j] > temp)
-            j--;
-
-        if (i <= j)
+        while (i < r && arr[i] <= arr[pivot])
         {
-            if (arr[i] > arr[j])
-                swap(arr[i], arr[j]);
             i++;
+        }
+        while (arr[j] > arr[pivot])
+        {
             j--;
         }
-    } while (i <= j);
-    if (i < r)
-        quick_sort3(arr, i, r);
-    if (l < j)
-        quick_sort3(arr, l, j);
+        if (i < j)
+        {
+            swap(arr[i], arr[j]);
+            if (pivot == i || pivot == j)
+                pivot = i + j - pivot;
+        }
+    }
+
+    swap(arr[pivot], arr[j]);
+
+    quick_sort3(arr, l, j);
+    quick_sort3(arr, i, r-1);
 }
 
 int main()

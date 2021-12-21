@@ -27,53 +27,61 @@ void quick_sort1(int *arr,int l, int r)
         quick_sort1(arr,m+1,r); 
     } 
 }
+int partition2(int *arr, int l, int r)
+{
+    int pivot = arr[l],i = l-1,j = r+1;
+    while(true){
+        do{
+            i++;
+        }while(pivot > arr[i]);
+        do{
+            j--;
+        }while(pivot < arr[j]);
+        if(i  >=j)
+            return j;
+        swap(arr[i],arr[j]);
+    }
+}
 void quick_sort2(int *arr, int l, int r)
 {
 
-    int temp = arr[(l + r) / 2], i = l, j = r;
-    do
+    if (l < r)
     {
-        while (arr[i] < temp)
-            i++;
-        while (arr[j] > temp)
-            j--;
-
-        if (i <= j)
-        {
-            if (arr[i] > arr[j])
-                swap(arr[i], arr[j]);
-            i++;
-            j--;
-        }
-    } while (i <= j);
-    if (i < r)
-        quick_sort2(arr, i, r);
-    if (l < j)
-        quick_sort2(arr, l, j);
+        int m = partition2(arr, l, r);
+        quick_sort2(arr, l, m);
+        quick_sort2(arr, m + 1, r);
+    }
 }
 void quick_sort3(int *arr, int l, int r)
 {
+    r++;
+    if (r-l <= 1)
+        return;
 
-    int temp = arr[(l + r) / 2], i = l, j = r;
-    do
+    int i = l, j = r-1,pivot = rand()%(r-l)+l;
+
+    while (i < j)
     {
-        while (arr[i] < temp)
-            i++;
-        while (arr[j] > temp)
-            j--;
-
-        if (i <= j)
+        while (i < r && arr[i] <= arr[pivot])
         {
-            if (arr[i] > arr[j])
-                swap(arr[i], arr[j]);
             i++;
+        }
+        while (arr[j] > arr[pivot])
+        {
             j--;
         }
-    } while (i <= j);
-    if (i < r)
-        quick_sort3(arr, i, r);
-    if (l < j)
-        quick_sort3(arr, l, j);
+        if (i < j)
+        {
+            swap(arr[i], arr[j]);
+            if (pivot == i || pivot == j)
+                pivot = i + j - pivot;
+        }
+    }
+
+    swap(arr[pivot], arr[j]);
+
+    quick_sort3(arr, l, j);
+    quick_sort3(arr, i, r-1);
 }
 void Fill(int *arr, int size)
 {

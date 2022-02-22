@@ -1,4 +1,7 @@
 #include <bits/stdc++.h>
+#include <windows.h>
+#define VK_SHIFT 0x10
+#define VK_CONTROL 0x11
 using namespace std;
 vector<int> Merge(vector<int> arr1, vector<int> arr2)
 {
@@ -6,8 +9,15 @@ vector<int> Merge(vector<int> arr1, vector<int> arr2)
     int n = arr1.size() + arr2.size();
     reverse(arr1.begin(), arr1.end());
     reverse(arr2.begin(), arr2.end());
+
     for (int i = 0; i < n; i++)
     {
+        if(!temp.empty()){
+            if(temp.back() == arr2.back()){
+                arr2.pop_back();
+                continue;
+            } 
+        }
         if (arr1.empty())
         {
             temp.push_back(arr2.back());
@@ -18,8 +28,6 @@ vector<int> Merge(vector<int> arr1, vector<int> arr2)
             temp.push_back(arr1.back());
             arr1.pop_back();
         }
-        else if (arr2.back() == arr1.back())
-            arr2.pop_back();
         else if (arr2.back() < arr1.back()){
             temp.push_back(arr2.back());
             arr2.pop_back();
@@ -39,15 +47,6 @@ void AutoFill(vector<int> &arr, int size, int step)
         counter += step;
     }
 }
-void Fill(vector<int> &arr, int size)
-{
-    int element;
-    for (int i = 0; i < size; i++)
-    {
-        cin >> element;
-        arr.push_back(element);
-    }
-}
 void Print(vector<int> arr)
 {
     for (int i = 0; i < arr.size(); i++)
@@ -56,11 +55,17 @@ void Print(vector<int> arr)
     }
     cout << endl;
 }
+int conver_to_int(string s){
+    stringstream num_stream(s);
+  int num = 0;
+  num_stream >> num;
+    return num;
+}
 int main()
 {
     int size1, size2, step, limit_size = 100;
     vector<int> arr1, arr2;
-    system("clear");
+    system("cls");
     cout << "Enter first array size: ";
     cin >> size1;
     cout << "Enter fill step: ";
@@ -76,7 +81,18 @@ int main()
         cin >> size2;
 
         cout << "Enter second array: ";
-        Fill(arr2, size2);
+
+        string str;
+        for (int i = 0; i < size2; i++)
+        {
+            getline(cin, str, '\n');
+            if((GetKeyState(VK_SHIFT) & 0x8000) != 0 && (GetKeyState(VK_CONTROL) & 0x8000) != 0)
+                return 0;
+            if(str != "")
+                arr2.push_back(conver_to_int(str));
+            else
+                i--;
+        }
         sort(arr2.begin(), arr2.end());
 
         cout << "First array: ";
@@ -92,11 +108,3 @@ int main()
     }
     return 0;
 }
-// Enter first array size: 10
-// Enter fill step: 2
-// First array: 0 2 4 6 8 10 12 14 16 18
-
-// Enter second array size: 4
-// 4 4 1 3
-// First array: 0 2 4 6 8 10 12 14 16 18
-// Second array: 1 3 4 4

@@ -3,9 +3,9 @@
 #include <filesystem>
 using namespace std;
 using std::filesystem::exists;
-const int M = 50000;
+int M = 50000;
+int K = 10;
 const int N = 1234567;
-const int K = 10;
 
 void Create_start_file()
 {
@@ -18,8 +18,8 @@ void Create_start_file()
     srand(time(0));
     for (int i = 0; i < N; i++)
     {
-        out << rand()%100001;
-        if(i != N-1)
+        out << rand() % 100001;
+        if (i != N - 1)
             out << endl;
     }
     out.close();
@@ -43,9 +43,9 @@ void Serialize(vector<int> arr, int f_num)
     wf.open(to_string(f_num) + ".dat", ios::out | ios::binary);
     for (int i = 0; i < arr.size(); i++)
     {
-        
-        wf << arr[i] ;
-        if(i !=  arr.size()-1)
+
+        wf << arr[i];
+        if (i != arr.size() - 1)
             wf << endl;
     }
     wf.close();
@@ -112,7 +112,7 @@ void Merge(vector<ifstream *> &file_list)
                 q.push(temp);
             }
         }
-        if(!q.empty())
+        if (!q.empty())
             file << endl;
     }
     for (int i = 0; i < file_list.size(); i++)
@@ -125,46 +125,55 @@ void Merge(vector<ifstream *> &file_list)
 }
 int main()
 {
-
+    double start_time;
+    double end_time;
     Create_start_file();
     ifstream main_file_stream;
-    main_file_stream.open("input.dat", ios::in | ios::binary);
-    if (!main_file_stream)
+    for (; K <= 20; K += 10)
     {
-        cout << "Cannot open file!" << endl;
-        return 1;
-    }
-    vector<int> buffer;
-    vector<ifstream *> file_list;
-    ifstream *temp;
-    int i = 0;
-    while (!main_file_stream.eof())
-    {
-        file_list.clear();
+        main_file_stream.open("input.dat", ios::in | ios::binary);
+        if (!main_file_stream)
+        {
+            cout << "Cannot open file!" << endl;
+            return 1;
+        }
+        start_time = clock();
+        vector<int> buffer;
+        vector<ifstream *> file_list;
+        ifstream *temp;
+        int i = 0;
+        while (!main_file_stream.eof())
+        {
+            file_list.clear();
 
-        if (exists("output.dat"))
-        {
-            temp = new ifstream();
-            (*temp).open("output.dat", ios::in | ios::binary);
-            file_list.push_back(temp);
+            if (exists("output.dat"))
+            {
+                temp = new ifstream();
+                (*temp).open("output.dat", ios::in | ios::binary);
+                file_list.push_back(temp);
+            }
+            i = 1;
+            while (i <= K && !main_file_stream.eof())
+            {
+                buffer = Read_from_file(main_file_stream);
+                if (buffer.size() == 0)
+                    break;
+                sort(buffer.begin(), buffer.end());
+                Serialize(buffer, i);
+                temp = new ifstream();
+                (*temp).open(to_string(i) + ".dat", ios::in | ios::binary);
+                file_list.push_back(temp);
+                i++;
+                if (main_file_stream.eof())
+                    break;
+            }
+            Merge(file_list);
         }
-        i = 1;
-        while (i <= K && !main_file_stream.eof())
-        {
-            buffer = Read_from_file(main_file_stream);
-            if (buffer.size() == 0)
-                break;
-            sort(buffer.begin(), buffer.end());
-            Serialize(buffer, i);
-            temp = new ifstream();
-            (*temp).open(to_string(i) + ".dat", ios::in | ios::binary);
-            file_list.push_back(temp);
-            i++;
-            if (main_file_stream.eof())
-                break;
-        }
-        Merge(file_list);
+        Clear_temp_files();
+        end_time = clock();
+        cout << "Time: " << (end_time - start_time) / CLOCKS_PER_SEC << " Files: " << K << " Buffer: " << M << endl;
+        main_file_stream.close();
+        remove("output.dat");
     }
-    Clear_temp_files();
     return 0;
 }
